@@ -1,6 +1,4 @@
-///////////////////////////////////////////////
 ///////////// GLOBAL VARIABLES ///////////////
-///////////////////////////////////////////////
 
 //make board
 const board = document.querySelector(".gameCanvas");
@@ -30,7 +28,7 @@ let dy = 0;
 
 let changingDirection = false;
 
-let foodX, foodY, foodA, foodB;
+let foodX, foodY;
 
 let score = 0;
 
@@ -41,14 +39,14 @@ let expert = 45;
 
 let time = 500;
 
+
 const easyBtn = document.querySelector("#easyBtn");
 const medBtn = document.querySelector("#medBtn");
 const hardBtn = document.querySelector("#hardBtn");
 const expBtn = document.querySelector("#expBtn");
 
-///////////////////////////////////////////////
-///////////////// FUNCTIONS //////////////////
-///////////////////////////////////////////////
+
+//////////// FUNCTIONS ///////////////
 
 //to display snake on board, need a func to draw snake and then one that prints snake
 
@@ -73,7 +71,7 @@ function clearBoard() {
 }
 
 //draws and prints circles of food
-function printFoodCircles() {
+function printFood() {
   boardCtx.fillStyle = "lightgreen";
   boardCtx.strokeStyle = "darkgreen";
   boardCtx.beginPath();
@@ -82,17 +80,29 @@ function printFoodCircles() {
   boardCtx.fill();
 }
 
-function printFoodSquares() {
-  boardCtx.fillStyle = "orange";
-  boardCtx.strokeStyle = "purple";
-  boardCtx.fillRect(foodA, foodB, 10, 10);
-  boardCtx.strokeRect(foodA, foodB, 10, 10);
-}
-
 //random probabality of food
 function randomFood(min, max) {
   return Math.round((Math.random() * (max - min + min)) / 10) * 10;
 }
+
+//checks if any of the snakes squares touch any food circles
+function snakeAte(snakeSquare) {
+  //wasn't working before bc i had a strict equals operator
+  const ate = snakeSquare.x == foodX && snakeSquare.y == foodY;
+  if (ate === true) {
+    generateFood;
+  }
+}
+
+
+
+function generateFood() {
+  foodX = randomFood(0, board.width - 10);
+  foodY = randomFood(0, board.height - 10);
+  snake.forEach(snakeAte);
+}
+ 
+
 
 //updates position of the snake
 function moveSnake() {
@@ -100,11 +110,8 @@ function moveSnake() {
   const head = { x: snake[0].x + dx, y: snake[0].y + dy };
   //puts new head at position in front of rest of body
   snake.unshift(head);
-
-  const eatenCircle = snake[0].x === foodX && snake[0].y === foodY;
-  const eatenSquare = snake[0].x === foodA && snake[0].y === foodB;
-
-  if (eatenCircle) {
+  const eaten = snake[0].x === foodX && snake[0].y === foodY;
+  if (eaten === true) {
     score += 10;
     document.querySelector(".score").innerHTML = `Score: ${score}`;
     document.querySelector(
@@ -112,46 +119,15 @@ function moveSnake() {
     ).innerHTML = `Snake is now ${snake.length} units long`;
     //make new food somewhere else
     generateFood();
-    console.log("circle");
-  } else if (eatenSquare) {
-    score += 20;
-    document.querySelector(".score").innerHTML = `Score: ${score}`;
-    document.querySelector(
-      ".snakeSize"
-    ).innerHTML = `Snake is now ${snake.length} units long`;
-    //make new food somewhere else
-    generateFood();
-    console.log("square");
   } else {
     //pop off last snake square
     snake.pop();
   }
 }
 
+
 //snake moves 1 step to right (by 10px), increase x coordinate of every part of the snake by 10px (aka dx = +10)
 //snake moves 1 step to left (by 10px), decrease y coordinate of every part of the snake by 10px (aka dx = -10)
-
-//checks if any of the snakes squares touch any food circles
-function snakeAte(snakeSquare) {
-  //wasn't working before bc i had a strict equals operator
-  const ate =
-    (snakeSquare.x == foodX && snakeSquare.y == foodY) ||
-    (snakeSquare.x == foodA && snakeSquare.y == foodB);
-  if (ate === true) {
-    console.log('ate')
-    generateFood;
-  }
-}
-
-function generateFood() {
-  foodX = randomFood(0, board.width - 10);
-  foodY = randomFood(0, board.height - 10);
-  foodA = randomFood(0, board.width - 10);
-  foodB = randomFood(0, board.height - 10);
-  snake.forEach(snakeAte);
-}
-
-
 
 //changes direction of snake
 function changeDirection(event) {
@@ -235,56 +211,60 @@ function runGame() {
   changingDirection = false;
   //setTimeout between each movement of snake so user can see what is happening with each movement as opposed to snake just jumping forward
   setTimeout(function timeBtwn() {
+    clearBoard();
     printSnake();
-    printFoodCircles();
-    printFoodSquares();
+    printFood();
     moveSnake();
     runGame();
   }, time);
 }
 
-///////////////////////////////////////////////
-/////////////// EVENT LISTENERS ///////////////
-///////////////////////////////////////////////
 
-//show board
-clearBoard();
+////////// EVENT LISTENERS ///////////
 
 document.addEventListener("keydown", changeDirection);
 
 easyBtn.addEventListener("click", function (event) {
   event.preventDefault();
-  document.querySelector(".modeButtons").style.visibility = "hidden";
+  document.querySelector('.modeButtons').style.visibility = 'hidden'
   generateFood();
-  time = easy;
+  time = easy
   runGame();
 });
 
 medBtn.addEventListener("click", function (event) {
   event.preventDefault();
-  document.querySelector(".modeButtons").style.visibility = "hidden";
+  document.querySelector('.buttons').style.visibility = 'hidden'
   generateFood();
-  time = medium;
+  time = medium
   runGame();
 });
 
 hardBtn.addEventListener("click", function (event) {
   event.preventDefault();
-  document.querySelector(".modeButtons").style.visibility = "hidden";
+  document.querySelector('.buttons').style.visibility = 'hidden'
   generateFood();
-  time = hard;
+  time = hard
   runGame();
 });
 
 expBtn.addEventListener("click", function (event) {
   event.preventDefault();
-  document.querySelector(".modeButtons").style.visibility = "hidden";
+  document.querySelector('.buttons').style.visibility = 'hidden'
   generateFood();
-  time = expert;
+  time = expert
   runGame();
 });
 
-restartBtn.addEventListener("click", function (event) {
-  event.preventDefault();
-  location.reload();
-});
+
+
+
+
+
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+  

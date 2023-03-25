@@ -94,51 +94,12 @@ function randomFood(min, max) {
   return Math.round((Math.random() * (max - min + min)) / 10) * 10;
 }
 
-//updates position of the snake
-function moveSnake() {
-  //create new head in new coordinate
-  const head = { x: snake[0].x + dx, y: snake[0].y + dy };
-  //puts new head at position in front of rest of body
-  snake.unshift(head);
-
-  const eatenCircle = snake[0].x === foodX && snake[0].y === foodY;
-  const eatenSquare = snake[0].x === foodA && snake[0].y === foodB;
-
-  if (eatenCircle) {
-    score += 10;
-    document.querySelector(".score").innerHTML = `Score: ${score}`;
-    document.querySelector(
-      ".snakeSize"
-    ).innerHTML = `Snake is now ${snake.length} units long`;
-    //make new food somewhere else
-    generateFood();
-    console.log("circle");
-  } else if (eatenSquare) {
-    score += 20;
-    document.querySelector(".score").innerHTML = `Score: ${score}`;
-    document.querySelector(
-      ".snakeSize"
-    ).innerHTML = `Snake is now ${snake.length} units long`;
-    //make new food somewhere else
-    generateFood();
-    console.log("square");
-  } else {
-    //pop off last snake square
-    snake.pop();
-  }
-}
-
-//snake moves 1 step to right (by 10px), increase x coordinate of every part of the snake by 10px (aka dx = +10)
-//snake moves 1 step to left (by 10px), decrease y coordinate of every part of the snake by 10px (aka dx = -10)
-
 //checks if any of the snakes squares touch any food circles
 function snakeAte(snakeSquare) {
   //wasn't working before bc i had a strict equals operator
   const ate =
-    (snakeSquare.x == foodX && snakeSquare.y == foodY) ||
-    (snakeSquare.x == foodA && snakeSquare.y == foodB);
+    snakeSquare.x == (foodX || foodA) && snakeSquare.y == (foodY || foodB);
   if (ate === true) {
-    console.log('ate')
     generateFood;
   }
 }
@@ -151,7 +112,44 @@ function generateFood() {
   snake.forEach(snakeAte);
 }
 
+//updates position of the snake
+function moveSnake() {
+  //create new head in new coordinate
+  const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+  //puts new head at position in front of rest of body
+  snake.unshift(head);
 
+  const eatenCircle = snake[0].x == foodX && snake[0].y == foodY;
+  const eatenSquare = snake[0].x == foodA && snake[0].y == foodB;
+
+
+  if (eatenCircle === true || eatenSquare === true) {
+    if (eatenCircle === true) {
+      score += 10;
+      document.querySelector(".score").innerHTML = `Score: ${score}`;
+      document.querySelector(
+        ".snakeSize"
+      ).innerHTML = `Snake is now ${snake.length} units long`;
+      //make new food somewhere else
+      generateFood();
+    }
+
+    if (eatenSquare === true) {
+      score += 20;
+      document.querySelector(".score").innerHTML = `Score: ${score}`;
+      document.querySelector(
+        ".snakeSize"
+      ).innerHTML = `Snake is now ${snake.length} units long`;
+      //make new food somewhere else
+      generateFood();
+    }
+  } else {
+    //pop off last snake square
+    snake.pop();
+  }
+}
+//snake moves 1 step to right (by 10px), increase x coordinate of every part of the snake by 10px (aka dx = +10)
+//snake moves 1 step to left (by 10px), decrease y coordinate of every part of the snake by 10px (aka dx = -10)
 
 //changes direction of snake
 function changeDirection(event) {
@@ -235,6 +233,7 @@ function runGame() {
   changingDirection = false;
   //setTimeout between each movement of snake so user can see what is happening with each movement as opposed to snake just jumping forward
   setTimeout(function timeBtwn() {
+    clearBoard();
     printSnake();
     printFoodCircles();
     printFoodSquares();
@@ -246,9 +245,6 @@ function runGame() {
 ///////////////////////////////////////////////
 /////////////// EVENT LISTENERS ///////////////
 ///////////////////////////////////////////////
-
-//show board
-clearBoard();
 
 document.addEventListener("keydown", changeDirection);
 
@@ -282,9 +278,4 @@ expBtn.addEventListener("click", function (event) {
   generateFood();
   time = expert;
   runGame();
-});
-
-restartBtn.addEventListener("click", function (event) {
-  event.preventDefault();
-  location.reload();
 });
