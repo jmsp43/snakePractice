@@ -1,10 +1,15 @@
 
 body{
+    margin:0;
     display: flex;
     flex-direction: column;
+    font-family: fantasy;
+    background-color: antiquewhite;
+    text-align: center;
 }
 
 .gameCanvas{
+    margin-top: 10px;
     position: absolute;
     top:70%;
     left: 50%;
@@ -12,22 +17,20 @@ body{
 }
 
 .title{
-    font-family: fantasy;
-    text-align: center;
+    text-decoration: underline;
 }
 
 .score{
-    font-family: fantasy;
     font-size: xx-large;
     border: 5px solid red;
     background: yellow;
-    text-align: center;
 }
 
-.buttons{
-    text-align: center;
-    visibility: visible;
+button{
+    border: 2px solid darkblue;
+    font-family: fantasy;
 }
+
 
 .snakeSize{
     background: magenta

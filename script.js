@@ -220,6 +220,7 @@ document.addEventListener("keydown", changeDirection);
 
 easyBtn.addEventListener("click", function (event) {
   event.preventDefault();
+  document.querySelector('.buttons').style.visibility = 'hidden'
   generateFood();
   time = easy
   runGame();
@@ -227,6 +228,7 @@ easyBtn.addEventListener("click", function (event) {
 
 medBtn.addEventListener("click", function (event) {
   event.preventDefault();
+  document.querySelector('.buttons').style.visibility = 'hidden'
   generateFood();
   time = medium
   runGame();
@@ -234,6 +236,7 @@ medBtn.addEventListener("click", function (event) {
 
 hardBtn.addEventListener("click", function (event) {
   event.preventDefault();
+  document.querySelector('.buttons').style.visibility = 'hidden'
   generateFood();
   time = hard
   runGame();
@@ -241,6 +244,7 @@ hardBtn.addEventListener("click", function (event) {
 
 expBtn.addEventListener("click", function (event) {
   event.preventDefault();
+  document.querySelector('.buttons').style.visibility = 'hidden'
   generateFood();
   time = expert
   runGame();
