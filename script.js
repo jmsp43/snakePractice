@@ -1,3 +1,6 @@
+///////////// GLOBAL VARIABLES ///////////////
+
+
 //make board
 const board = document.querySelector(".gameCanvas");
 //means the board will be drawn into a 2d space
@@ -23,6 +26,15 @@ const snakeBorder = "lightblue";
 let dx = 10;
 //dy is vertical change in velocity
 let dy = 0;
+
+
+
+
+
+
+//////////// FUNCTIONS ///////////////
+
+
 
 //to display snake on board, need a func to draw snake and then one that prints snake
 
