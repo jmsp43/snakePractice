@@ -37,12 +37,13 @@ let medium = 160;
 let hard = 80;
 let expert = 45;
 
-let time = easy;
+let time = 500;
 
-///// EVENT LISTENER /////
 
-document.addEventListener("keydown", changeDirection);
-
+const easyBtn = document.querySelector("#easyBtn");
+const medBtn = document.querySelector("#medBtn");
+const hardBtn = document.querySelector("#hardBtn");
+const expBtn = document.querySelector("#expBtn");
 
 
 //////////// FUNCTIONS ///////////////
@@ -212,7 +213,36 @@ function runGame() {
   }, time);
 }
 
-generateFood();
 
-// document.addEventListener('click', runGame())
-runGame();
+////////// EVENT LISTENERS ///////////
+
+document.addEventListener("keydown", changeDirection);
+
+easyBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+  generateFood();
+  time = easy
+  runGame();
+});
+
+medBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+  generateFood();
+  time = medium
+  runGame();
+});
+
+hardBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+  generateFood();
+  time = hard
+  runGame();
+});
+
+expBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+  generateFood();
+  time = expert
+  runGame();
+});
+
