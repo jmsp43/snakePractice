@@ -87,9 +87,9 @@ function changeDirection(event) {
   const down = 40
 
   //prevents changing direction when you are already doing so
-  //made it so i couldn't change direction at all once i did it once, not sure why that's bugging, will fix later
-  // if (changingDirection) return;
-  // changingDirection = true;
+  //made it so i couldn't change direction at all once i did it once when i only added these two lines, but fixed in runGame func
+  if (changingDirection) return;
+  changingDirection = true;
 
   const keyPressed = event.keyCode;
   //think of x and y axis
@@ -149,7 +149,10 @@ function gameOver() {
 
 
 function runGame() {
-  if(gameOver()) return
+  if (gameOver()) return
+
+  //this is why my changingDirection check didn't work just in my changeDirection func, needed outside func change, otherwise script was failing to run
+  changingDirection = false
   //setTimeout between each movement of snake so user can see what is happening with each movement as opposed to snake just jumping forward
   setTimeout(function timeBtwn() {
     clearBoard();
