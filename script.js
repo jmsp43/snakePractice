@@ -80,7 +80,8 @@ function randomFood(min, max) {
 
 //checks if any of the snakes squares touch any food circles
 function snakeAte(snakeSquare) {
-  const ate = snakeSquare.x === foodX && snakeSquare.y === foodY
+  //wasn't working before bc i had a strict equals operator
+  const ate = snakeSquare.x == foodX && snakeSquare.y == foodY
   if (ate === true) {
     generateFood
   }
@@ -198,7 +199,7 @@ function runGame() {
     printFood();
     moveSnake();
     runGame();
-  }, 500);
+  }, 300);
 }
 
 generateFood()
