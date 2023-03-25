@@ -116,10 +116,40 @@ function changeDirection(event) {
   }
 }
 
+function gameOver() {
+  for (let i = 4; i < snake.length; i++){
+      //is snake head in same place as any other snake square
+      const collision = snake[i].x === snake[0].x && snake[i].y === snake[0].y
 
+    if (collision === true) {
+        window.alert('Game over, head collided with body')
+          return true
+      }
+  }
+
+
+  //did not know why these trailing nums should be there until i played around with them and watched what difference they made
+  const hitLeftWall = snake[0].x < 0
+      //0 makes it so you can be right up against the wall but as long as you don't collide, you're still in the game
+
+  const hitRightWall = snake[0].x > board.width - 10
+  //-10 makes it so you can be right up against the wall but as long as you don't collide, you're still in the game
+
+  const hitTopWall = snake[0].y < 0
+    //0 makes it so you can be right up against the wall but as long as you don't collide, you're still in the game
+  
+  const hitBottomWall = snake[0].y > board.height - 10
+    //-10 makes it so you can be right up against the wall but as long as you don't collide, you're still in the game
+  
+  if (hitLeftWall === true || hitRightWall === true || hitTopWall === true || hitBottomWall === true) {
+      window.alert('Game over, collided with wall')
+      return true
+  } else return false
+}
 
 
 function runGame() {
+  if(gameOver()) return
   //setTimeout between each movement of snake so user can see what is happening with each movement as opposed to snake just jumping forward
   setTimeout(function timeBtwn() {
     clearBoard();
