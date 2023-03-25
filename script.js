@@ -87,8 +87,9 @@ function changeDirection(event) {
   const down = 40
 
   //prevents changing direction when you are already doing so
-  if (changingDirection) return;
-  changingDirection = true;
+  //made it so i couldn't change direction at all once i did it once, not sure why that's bugging, will fix later
+  // if (changingDirection) return;
+  // changingDirection = true;
 
   const keyPressed = event.keyCode;
   //think of x and y axis
