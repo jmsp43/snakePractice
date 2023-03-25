@@ -30,11 +30,20 @@ let changingDirection = false;
 
 let foodX, foodY;
 
-let score = 0
+let score = 0;
+
+let easy = 280;
+let medium = 160;
+let hard = 80;
+let expert = 45;
+
+let time = easy;
 
 ///// EVENT LISTENER /////
 
 document.addEventListener("keydown", changeDirection);
+
+
 
 //////////// FUNCTIONS ///////////////
 
@@ -60,39 +69,35 @@ function clearBoard() {
   boardCtx.strokeRect(0, 0, board.width, board.height);
 }
 
-
-
 //draws and prints circles of food
 function printFood() {
   boardCtx.fillStyle = "lightgreen";
   boardCtx.strokeStyle = "darkgreen";
-  boardCtx.beginPath()
-  boardCtx.arc(foodX, foodY, 6, 0, 2 * Math.PI)
-  boardCtx.stroke()
-  boardCtx.fill()
+  boardCtx.beginPath();
+  boardCtx.arc(foodX, foodY, 7, 0, 2 * Math.PI);
+  boardCtx.stroke();
+  boardCtx.fill();
 }
-
 
 //random probabality of food
 function randomFood(min, max) {
-  return Math.round(Math.random()* ((max-min) + min)/10) * 10
+  return Math.round((Math.random() * (max - min + min)) / 10) * 10;
 }
 
 //checks if any of the snakes squares touch any food circles
 function snakeAte(snakeSquare) {
   //wasn't working before bc i had a strict equals operator
-  const ate = snakeSquare.x == foodX && snakeSquare.y == foodY
+  const ate = snakeSquare.x == foodX && snakeSquare.y == foodY;
   if (ate === true) {
-    generateFood
+    generateFood;
   }
 }
 
 function generateFood() {
-  foodX = randomFood(0, board.width - 10)
-  foodY = randomFood(0, board.height - 10)
-  snake.forEach(snakeAte)
+  foodX = randomFood(0, board.width - 10);
+  foodY = randomFood(0, board.height - 10);
+  snake.forEach(snakeAte);
 }
-
 
 //updates position of the snake
 function moveSnake() {
@@ -100,12 +105,15 @@ function moveSnake() {
   const head = { x: snake[0].x + dx, y: snake[0].y + dy };
   //puts new head at position in front of rest of body
   snake.unshift(head);
-  const eaten = snake[0].x === foodX && snake[0].y === foodY
+  const eaten = snake[0].x === foodX && snake[0].y === foodY;
   if (eaten === true) {
-    score += 10
-    document.querySelector('.score').innerHTML = score
+    score += 10;
+    document.querySelector(".score").innerHTML = `Score: ${score}`;
+    document.querySelector(
+      ".snakeSize"
+    ).innerHTML = `Snake is now ${snake.length} units long`;
     //make new food somewhere else
-    generateFood()
+    generateFood();
   } else {
     //pop off last snake square
     snake.pop();
@@ -158,7 +166,8 @@ function gameOver() {
     const collision = snake[i].x === snake[0].x && snake[i].y === snake[0].y;
 
     if (collision === true) {
-      window.alert("Game over, head collided with body");
+      document.querySelector(".gameEnded").innerHTML =
+        "Game over, head collided with body";
       return true;
     }
   }
@@ -182,7 +191,8 @@ function gameOver() {
     hitTopWall === true ||
     hitBottomWall === true
   ) {
-    window.alert("Game over, collided with wall");
+    document.querySelector(".gameEnded").innerHTML =
+      "Game over, head collided with wall";
     return true;
   } else return false;
 }
@@ -199,8 +209,10 @@ function runGame() {
     printFood();
     moveSnake();
     runGame();
-  }, 300);
+  }, time);
 }
 
-generateFood()
+generateFood();
+
+// document.addEventListener('click', runGame())
 runGame();

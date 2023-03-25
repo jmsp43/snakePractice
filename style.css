@@ -1,6 +1,38 @@
+
+body{
+    display: flex;
+    flex-direction: column;
+}
+
 .gameCanvas{
     position: absolute;
-    top:50%;
+    top:60%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.title{
+    font-family: fantasy;
+    text-align: center;
+}
+
+.score{
+    font-family: fantasy;
+    font-size: xx-large;
+    border: 5px solid red;
+    background: yellow;
+    text-align: center;
+}
+
+.buttons{
+    text-align: center;
+    visibility: visible;
+}
+
+.snakeSize{
+    background: magenta
+}
+
+.gameEnded {
+    background: lightblue
 }
