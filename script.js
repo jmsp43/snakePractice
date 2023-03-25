@@ -1,4 +1,6 @@
+///////////////////////////////////////////////
 ///////////// GLOBAL VARIABLES ///////////////
+///////////////////////////////////////////////
 
 //make board
 const board = document.querySelector(".gameCanvas");
@@ -28,7 +30,7 @@ let dy = 0;
 
 let changingDirection = false;
 
-let foodX, foodY;
+let foodX, foodY, foodA, foodB;
 
 let score = 0;
 
@@ -39,14 +41,14 @@ let expert = 45;
 
 let time = 500;
 
-
 const easyBtn = document.querySelector("#easyBtn");
 const medBtn = document.querySelector("#medBtn");
 const hardBtn = document.querySelector("#hardBtn");
 const expBtn = document.querySelector("#expBtn");
 
-
-//////////// FUNCTIONS ///////////////
+///////////////////////////////////////////////
+///////////////// FUNCTIONS //////////////////
+///////////////////////////////////////////////
 
 //to display snake on board, need a func to draw snake and then one that prints snake
 
@@ -71,13 +73,20 @@ function clearBoard() {
 }
 
 //draws and prints circles of food
-function printFood() {
+function printFoodCircles() {
   boardCtx.fillStyle = "lightgreen";
   boardCtx.strokeStyle = "darkgreen";
   boardCtx.beginPath();
   boardCtx.arc(foodX, foodY, 7, 0, 2 * Math.PI);
   boardCtx.stroke();
   boardCtx.fill();
+}
+
+function printFoodSquares() {
+  boardCtx.fillStyle = "orange";
+  boardCtx.strokeStyle = "purple";
+  boardCtx.fillRect(foodA, foodB, 10, 10);
+  boardCtx.strokeRect(foodA, foodB, 10, 10);
 }
 
 //random probabality of food
@@ -88,7 +97,8 @@ function randomFood(min, max) {
 //checks if any of the snakes squares touch any food circles
 function snakeAte(snakeSquare) {
   //wasn't working before bc i had a strict equals operator
-  const ate = snakeSquare.x == foodX && snakeSquare.y == foodY;
+  const ate =
+    snakeSquare.x == (foodX || foodA) && snakeSquare.y == (foodY || foodB);
   if (ate === true) {
     generateFood;
   }
@@ -97,6 +107,8 @@ function snakeAte(snakeSquare) {
 function generateFood() {
   foodX = randomFood(0, board.width - 10);
   foodY = randomFood(0, board.height - 10);
+  foodA = randomFood(0, board.width - 10);
+  foodB = randomFood(0, board.height - 10);
   snake.forEach(snakeAte);
 }
 
@@ -106,15 +118,31 @@ function moveSnake() {
   const head = { x: snake[0].x + dx, y: snake[0].y + dy };
   //puts new head at position in front of rest of body
   snake.unshift(head);
-  const eaten = snake[0].x === foodX && snake[0].y === foodY;
-  if (eaten === true) {
-    score += 10;
-    document.querySelector(".score").innerHTML = `Score: ${score}`;
-    document.querySelector(
-      ".snakeSize"
-    ).innerHTML = `Snake is now ${snake.length} units long`;
-    //make new food somewhere else
-    generateFood();
+
+  const eatenCircle = snake[0].x == foodX && snake[0].y == foodY;
+  const eatenSquare = snake[0].x == foodA && snake[0].y == foodB;
+
+
+  if (eatenCircle === true || eatenSquare === true) {
+    if (eatenCircle === true) {
+      score += 10;
+      document.querySelector(".score").innerHTML = `Score: ${score}`;
+      document.querySelector(
+        ".snakeSize"
+      ).innerHTML = `Snake is now ${snake.length} units long`;
+      //make new food somewhere else
+      generateFood();
+    }
+
+    if (eatenSquare === true) {
+      score += 20;
+      document.querySelector(".score").innerHTML = `Score: ${score}`;
+      document.querySelector(
+        ".snakeSize"
+      ).innerHTML = `Snake is now ${snake.length} units long`;
+      //make new food somewhere else
+      generateFood();
+    }
   } else {
     //pop off last snake square
     snake.pop();
@@ -207,46 +235,47 @@ function runGame() {
   setTimeout(function timeBtwn() {
     clearBoard();
     printSnake();
-    printFood();
+    printFoodCircles();
+    printFoodSquares();
     moveSnake();
     runGame();
   }, time);
 }
 
-
-////////// EVENT LISTENERS ///////////
+///////////////////////////////////////////////
+/////////////// EVENT LISTENERS ///////////////
+///////////////////////////////////////////////
 
 document.addEventListener("keydown", changeDirection);
 
 easyBtn.addEventListener("click", function (event) {
   event.preventDefault();
-  document.querySelector('.buttons').style.visibility = 'hidden'
+  document.querySelector(".buttons").style.visibility = "hidden";
   generateFood();
-  time = easy
+  time = easy;
   runGame();
 });
 
 medBtn.addEventListener("click", function (event) {
   event.preventDefault();
-  document.querySelector('.buttons').style.visibility = 'hidden'
+  document.querySelector(".buttons").style.visibility = "hidden";
   generateFood();
-  time = medium
+  time = medium;
   runGame();
 });
 
 hardBtn.addEventListener("click", function (event) {
   event.preventDefault();
-  document.querySelector('.buttons').style.visibility = 'hidden'
+  document.querySelector(".buttons").style.visibility = "hidden";
   generateFood();
-  time = hard
+  time = hard;
   runGame();
 });
 
 expBtn.addEventListener("click", function (event) {
   event.preventDefault();
-  document.querySelector('.buttons').style.visibility = 'hidden'
+  document.querySelector(".buttons").style.visibility = "hidden";
   generateFood();
-  time = expert
+  time = expert;
   runGame();
 });
-
