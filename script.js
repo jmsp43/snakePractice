@@ -78,9 +78,9 @@ function printFoodTriangles() {
   boardCtx.fillStyle = "purple";
   boardCtx.strokeStyle = "rebeccapurple";
   boardCtx.beginPath();
-  boardCtx.moveTo(foodC + 10, foodD)
-  boardCtx.lineTo(foodC, foodD - 10);
-  boardCtx.lineTo(foodC- 10, foodD + 10);
+  boardCtx.moveTo(foodC + 7, foodD)
+  boardCtx.lineTo(foodC, foodD - 7);
+  boardCtx.lineTo(foodC- 7, foodD + 7);
   boardCtx.closePath();
   boardCtx.stroke();
   boardCtx.fill();
@@ -150,7 +150,6 @@ function moveSnake() {
       ).innerHTML = `Snake is now ${snake.length} units long`;
       //make new food somewhere else
       generateFood();
-      console.log("circle");
     }
 
     if (eatenSquare === true) {
@@ -161,7 +160,6 @@ function moveSnake() {
       ).innerHTML = `Snake is now ${snake.length} units long`;
       //make new food somewhere else
       generateFood();
-      console.log("square");
     }
     if (eatenTriangle === true) {
       score += 20;
@@ -171,11 +169,9 @@ function moveSnake() {
       ).innerHTML = `Snake is now ${snake.length} units long`;
       //make new food somewhere else
       generateFood();
-      console.log("triangle");
     }
   } else {
     //pop off last snake square
-    console.log("pop");
     snake.pop();
   }
 }
