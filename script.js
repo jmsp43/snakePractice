@@ -27,19 +27,14 @@ const snakeBorder = "#8A2846";
 let dx = 10;
 //dy is vertical change in velocity
 let dy = 0;
-
-let changingDirection = false;
-
-let foodX, foodY, foodA, foodB, foodC, foodD;
-
 let score = 0;
-
 let easy = 280;
 let medium = 160;
 let hard = 80;
 let expert = 45;
+let changingDirection = false;
 
-let time;
+let foodX, foodY, foodA, foodB, foodC, foodD, time, obstacleX, obstacleY;
 
 const easyBtn = document.querySelector("#easyBtn");
 const medBtn = document.querySelector("#medBtn");
@@ -78,15 +73,13 @@ function printFoodTriangles() {
   boardCtx.fillStyle = "#E05780";
   boardCtx.strokeStyle = "#602437";
   boardCtx.beginPath();
-  boardCtx.moveTo(foodC + 7, foodD)
+  boardCtx.moveTo(foodC + 7, foodD);
   boardCtx.lineTo(foodC, foodD - 7);
-  boardCtx.lineTo(foodC- 7, foodD + 7);
+  boardCtx.lineTo(foodC - 7, foodD + 7);
   boardCtx.closePath();
   boardCtx.stroke();
   boardCtx.fill();
 }
-
-
 
 //draws and prints circles of food
 function printFoodCircles() {
@@ -98,6 +91,7 @@ function printFoodCircles() {
   boardCtx.fill();
 }
 
+//draws and prints squares of food
 function printFoodSquares() {
   boardCtx.fillStyle = "#B9375E";
   boardCtx.strokeStyle = "#8A2846";
@@ -105,8 +99,21 @@ function printFoodSquares() {
   boardCtx.strokeRect(foodA, foodB, 10, 10);
 }
 
+//should draw and print an obstacle, but currently isn't doing it
+function printObstacles() {
+  boardCtx.fillStyle = "black";
+  boardCtx.strokeStyle = "chartreuse";
+  boardCtx.fillRect(obstacleX, obstacleY, 20, 20);
+  boardCtx.strokeRect(obstacleX, obstacleY, 20, 20);
+}
+
 //random probabality of food
 function randomFood(min, max) {
+  return Math.round((Math.random() * (max - min + min)) / 10) * 10;
+}
+
+//random probability of obstacle
+function randomObstacle(min, max) {
   return Math.round((Math.random() * (max - min + min)) / 10) * 10;
 }
 
@@ -114,12 +121,14 @@ function randomFood(min, max) {
 function snakeAte(snakeSquare) {
   //wasn't working before bc i had a strict equals operator
   const ate =
-    snakeSquare.x == (foodX || foodA || foodC) && snakeSquare.y == (foodY || foodB || foodD);
+    snakeSquare.x == (foodX || foodA || foodC) &&
+    snakeSquare.y == (foodY || foodB || foodD);
   if (ate === true) {
     generateFood;
   }
 }
 
+//generates food at random spots
 function generateFood() {
   foodX = randomFood(0, board.width - 10);
   foodY = randomFood(0, board.height - 10);
@@ -130,6 +139,16 @@ function generateFood() {
   snake.forEach(snakeAte);
 }
 
+//should generate obstacle at random spot but currently doesn't work and if snake hits obstacle then game should end
+function generateObstacles() {
+  obstacleX = randomObstacle(0, board.width - 20);
+  obstacleY = randomObstacle(0, board.height - 20);
+  const hitObstacle = snakeSquare.x == obstacleX && snakeSquare.y == obstacleY;
+  if (hitObstacle === true) {
+    gameOver();
+  }
+}
+
 //updates position of the snake
 function moveSnake() {
   //create new head in new coordinate
@@ -138,9 +157,17 @@ function moveSnake() {
   snake.unshift(head);
 
   const eatenCircle = snake[0].x == foodX && snake[0].y == foodY;
+
+  //me trying to fix the gameplay issue that causes player to have to hit the lower right side part of the circle for it to count, doesn't work yet
+  //  const eatenCircle = snake[0].x == foodX || foodX-1||foodX-2||foodX-3||foodX-4|foodX-5||foodX-6||foodX-7||foodX+1||foodX+2||foodX+3||foodX+4|foodX+5||foodX+6||foodX+7 && snake[0].y == foodY || foodY-1||foodY-2||foodY-3||foodY-4|foodY-5||foodY-6||foodY-7||foodY+1||foodY+2||foodY+3|| foodY + 4 | foodY + 5 || foodY + 6 || foodY + 7;
+
   const eatenSquare = snake[0].x == foodA && snake[0].y == foodB;
   const eatenTriangle = snake[0].x == foodC && snake[0].y == foodD;
 
+  //me trying to fix the gameplay issue that causes player to have to hit the right most corner of the triangle for it to count, doesn't work yet
+  //  const eatenTriangle = (snake[0].x == foodC && snake[0].y == foodD) || (snake[0].x == foodC -7 && snake[0].y == foodD) || (snake[0].x == foodC && snake[0].y == foodD - 7)
+
+  //different food types worth different amounts of points
   if (eatenCircle === true || eatenSquare === true || eatenTriangle === true) {
     if (eatenCircle === true) {
       score += 30;
@@ -175,7 +202,6 @@ function moveSnake() {
     snake.pop();
   }
 }
-
 //snake moves 1 step to right (by 10px), increase x coordinate of every part of the snake by 10px (aka dx = +10)
 //snake moves 1 step to left (by 10px), decrease y coordinate of every part of the snake by 10px (aka dx = -10)
 
@@ -199,6 +225,7 @@ function changeDirection(event) {
   const goingRight = dx === 10;
   const goingDown = dy === 10;
 
+  //moves snake according to what arrow is pressed and ensures you cannot go backwards
   if (keyPressed === left && goingRight === false) {
     dx = -10;
     dy = 0;
@@ -266,6 +293,7 @@ function runGame() {
     printFoodCircles();
     printFoodSquares();
     printFoodTriangles();
+    printObstacles();
     moveSnake();
     runGame();
   }, time);
@@ -275,12 +303,15 @@ function runGame() {
 /////////////// EVENT LISTENERS ///////////////
 ///////////////////////////////////////////////
 
+//change direction upon pressing key
 document.addEventListener("keydown", changeDirection);
 
+//buttons to choose for mode player wants
 easyBtn.addEventListener("click", function (event) {
   event.preventDefault();
-    document.querySelector(".modeButtons").style.visibility = "hidden";
+  document.querySelector(".modeButtons").style.visibility = "hidden";
   generateFood();
+  // generateObstacles();
   time = easy;
   runGame();
 });
@@ -289,6 +320,7 @@ medBtn.addEventListener("click", function (event) {
   event.preventDefault();
   document.querySelector(".modeButtons").style.visibility = "hidden";
   generateFood();
+  // generateObstacles();
   time = medium;
   runGame();
 });
@@ -297,6 +329,7 @@ hardBtn.addEventListener("click", function (event) {
   event.preventDefault();
   document.querySelector(".modeButtons").style.visibility = "hidden";
   generateFood();
+  //generateObstacles();
   time = hard;
   runGame();
 });
@@ -305,6 +338,7 @@ expBtn.addEventListener("click", function (event) {
   event.preventDefault();
   document.querySelector(".modeButtons").style.visibility = "hidden";
   generateFood();
+  // generateObstacles();
   time = expert;
   runGame();
 });
