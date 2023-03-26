@@ -4,7 +4,7 @@ body{
     display: flex;
     flex-direction: column;
     font-family: fantasy;
-    background-color: antiquewhite;
+    background-color: #FF7AA2;
     text-align: center;
 }
 
@@ -12,37 +12,36 @@ body{
     margin-top: 10px;
     position: absolute;
     display: flex;
-    top:75%;
+    top:65%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
 .title{
     text-decoration: underline;
+    color: #FFE0E9
 }
 
-.scoreBox{
-    border: 5px solid red;
-    background: yellow;
-}
 
 .score{
     font-size: xx-large;
     margin: 0;
     padding:0;
+    color: #602437
 }
 
 h4{
     margin-top: 5px;
     margin-bottom: 0;
     padding: 0;
-    color:darkblue
+    color: #8A2846
 }
 
 p{
     margin-bottom: 3px;
     margin-top: 3px;
     padding: 0;
+    color: #FFE0E9
 }
 
 button{
@@ -50,14 +49,15 @@ button{
     font-family: fantasy;
     margin: 2px;
     border-radius: 10px;
-    background-color: lightblue
+    background-color: #B9375E;
+    color: #FFE0E9
 }
 
 
 .snakeSize{
-    background: magenta
+    color:#602437
 }
 
 .gameEnded {
-    background: lightblue
+    color: #522E38
 }

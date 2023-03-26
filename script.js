@@ -18,10 +18,10 @@ let snake = [
 //these are initial coordinates for each square making up the snake
 //horizontal body at this point
 
-const boardColor = "indianred";
-const boardBorder = "black";
-const snakeColor = "darkblue";
-const snakeBorder = "lightblue";
+const boardColor = "#FFC2D4";
+const boardBorder = "#602437";
+const snakeColor = "#FFE0E9";
+const snakeBorder = "#8A2846";
 
 //dx is horizontal change in velocity of snake
 let dx = 10;
@@ -75,8 +75,8 @@ function clearBoard() {
 
 //draws and prints triangles of food
 function printFoodTriangles() {
-  boardCtx.fillStyle = "purple";
-  boardCtx.strokeStyle = "rebeccapurple";
+  boardCtx.fillStyle = "#E05780";
+  boardCtx.strokeStyle = "#602437";
   boardCtx.beginPath();
   boardCtx.moveTo(foodC + 7, foodD)
   boardCtx.lineTo(foodC, foodD - 7);
@@ -90,8 +90,8 @@ function printFoodTriangles() {
 
 //draws and prints circles of food
 function printFoodCircles() {
-  boardCtx.fillStyle = "lightgreen";
-  boardCtx.strokeStyle = "darkgreen";
+  boardCtx.fillStyle = "#FF7AA2";
+  boardCtx.strokeStyle = "#8A2846";
   boardCtx.beginPath();
   boardCtx.arc(foodX, foodY, 7, 0, 2 * Math.PI);
   boardCtx.stroke();
@@ -99,8 +99,8 @@ function printFoodCircles() {
 }
 
 function printFoodSquares() {
-  boardCtx.fillStyle = "orange";
-  boardCtx.strokeStyle = "purple";
+  boardCtx.fillStyle = "#B9375E";
+  boardCtx.strokeStyle = "#8A2846";
   boardCtx.fillRect(foodA, foodB, 10, 10);
   boardCtx.strokeRect(foodA, foodB, 10, 10);
 }
