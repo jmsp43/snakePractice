@@ -86,7 +86,7 @@ function printFoodCircles() {
   boardCtx.fillStyle = "#FF7AA2";
   boardCtx.strokeStyle = "#8A2846";
   boardCtx.beginPath();
-  boardCtx.arc(foodX, foodY, 7, 0, 2 * Math.PI);
+  boardCtx.arc(foodX, foodY, 6, 0, 2 * Math.PI);
   boardCtx.stroke();
   boardCtx.fill();
 }
@@ -159,7 +159,7 @@ function moveSnake() {
   const eatenCircle = snake[0].x == foodX && snake[0].y == foodY;
 
   //me trying to fix the gameplay issue that causes player to have to hit the lower right side part of the circle for it to count, doesn't work yet
-  //  const eatenCircle = snake[0].x == foodX || foodX-1||foodX-2||foodX-3||foodX-4|foodX-5||foodX-6||foodX-7||foodX+1||foodX+2||foodX+3||foodX+4|foodX+5||foodX+6||foodX+7 && snake[0].y == foodY || foodY-1||foodY-2||foodY-3||foodY-4|foodY-5||foodY-6||foodY-7||foodY+1||foodY+2||foodY+3|| foodY + 4 | foodY + 5 || foodY + 6 || foodY + 7;
+  // const eatenCircle = (snake[0].x == foodX && snake[0].y == foodY)|| (snake[0].x == foodX-3 && snake[0].y == foodY+3) || (snake[0].x == foodX-4 && snake[0].y == foodY+4) || (snake[0].x == foodX-6 && snake[0].y == foodY+6) || (snake[0].x == foodX-6 && snake[0].y == foodY+6) || (snake[0].x == foodX-5 && snake[0].y == foodY+5)||(snake[0].x == foodX-7 && snake[0].y == foodY+7) || (snake[0].x == foodX-8 && snake[0].y == foodY+8)
 
   const eatenSquare = snake[0].x == foodA && snake[0].y == foodB;
   const eatenTriangle = snake[0].x == foodC && snake[0].y == foodD;
