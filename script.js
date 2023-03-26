@@ -30,7 +30,7 @@ let dy = 0;
 
 let changingDirection = false;
 
-let foodX, foodY, foodA, foodB;
+let foodX, foodY, foodA, foodB, foodC, foodD;
 
 let score = 0;
 
@@ -73,6 +73,21 @@ function clearBoard() {
   boardCtx.strokeRect(0, 0, board.width, board.height);
 }
 
+//draws and prints triangles of food
+function printFoodTriangles() {
+  boardCtx.fillStyle = "purple";
+  boardCtx.strokeStyle = "rebeccapurple";
+  boardCtx.beginPath();
+  boardCtx.moveTo(foodC + 10, foodD)
+  boardCtx.lineTo(foodC, foodD - 10);
+  boardCtx.lineTo(foodC- 10, foodD + 10);
+  boardCtx.closePath();
+  boardCtx.stroke();
+  boardCtx.fill();
+}
+
+
+
 //draws and prints circles of food
 function printFoodCircles() {
   boardCtx.fillStyle = "lightgreen";
@@ -99,7 +114,7 @@ function randomFood(min, max) {
 function snakeAte(snakeSquare) {
   //wasn't working before bc i had a strict equals operator
   const ate =
-    snakeSquare.x == (foodX || foodA) && snakeSquare.y == (foodY || foodB);
+    snakeSquare.x == (foodX || foodA || foodC) && snakeSquare.y == (foodY || foodB || foodD);
   if (ate === true) {
     generateFood;
   }
@@ -110,6 +125,8 @@ function generateFood() {
   foodY = randomFood(0, board.height - 10);
   foodA = randomFood(0, board.width - 10);
   foodB = randomFood(0, board.height - 10);
+  foodC = randomFood(0, board.width - 10);
+  foodD = randomFood(0, board.height - 10);
   snake.forEach(snakeAte);
 }
 
@@ -122,10 +139,11 @@ function moveSnake() {
 
   const eatenCircle = snake[0].x == foodX && snake[0].y == foodY;
   const eatenSquare = snake[0].x == foodA && snake[0].y == foodB;
+  const eatenTriangle = snake[0].x == foodC && snake[0].y == foodD;
 
-  if (eatenCircle === true || eatenSquare === true) {
+  if (eatenCircle === true || eatenSquare === true || eatenTriangle === true) {
     if (eatenCircle === true) {
-      score += 10;
+      score += 30;
       document.querySelector(".score").innerHTML = `Score: ${score}`;
       document.querySelector(
         ".snakeSize"
@@ -136,7 +154,7 @@ function moveSnake() {
     }
 
     if (eatenSquare === true) {
-      score += 20;
+      score += 10;
       document.querySelector(".score").innerHTML = `Score: ${score}`;
       document.querySelector(
         ".snakeSize"
@@ -144,6 +162,16 @@ function moveSnake() {
       //make new food somewhere else
       generateFood();
       console.log("square");
+    }
+    if (eatenTriangle === true) {
+      score += 20;
+      document.querySelector(".score").innerHTML = `Score: ${score}`;
+      document.querySelector(
+        ".snakeSize"
+      ).innerHTML = `Snake is now ${snake.length} units long`;
+      //make new food somewhere else
+      generateFood();
+      console.log("triangle");
     }
   } else {
     //pop off last snake square
@@ -241,6 +269,7 @@ function runGame() {
     printSnake();
     printFoodCircles();
     printFoodSquares();
+    printFoodTriangles();
     moveSnake();
     runGame();
   }, time);
